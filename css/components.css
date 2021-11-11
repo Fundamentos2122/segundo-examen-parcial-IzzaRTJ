@@ -264,6 +264,14 @@ button[name="btn-player"]{
 .show {
     display: block;
 }
+.hide{
+    display: none;
+}
+
+.task{
+    background-color: mintcream;
+    border-top: 1px solid gray;
+}
 
 .complete{
     background-color:seagreen;

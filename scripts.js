@@ -1,31 +1,85 @@
 
 const LS_keyChain = "TaskKeyChain";
-var modal = document.getElementById("modal");
+const modal = document.getElementById("modal");
 const task_space = document.getElementById("tasks-space")
-var openbtn = document.getElementById("btn-nuevo");
-
+const openbtn = document.getElementById("btn-nuevo");
+const see_all = document.getElementById("see-all");
 
 var keychain = [];
 var task_list = [];
 
-var attr_toggel = "data-toggle";
-var attr_target = "data-target";
+const attr_toggle = "data-toggle";
+const attr_target = "data-target";
 const attr_dismiss = "data-dismis";
 
-var class_modal = "modal";
-var class_show = "show";
+const class_modal = "modal";
+const class_task = "task"
+const class_show = "show";
+const class_hide = "hide";
+const class_complete = "complete";
+const name_complete = "complete";
+
+
+var close_btn = document.getElementById("modal-close-btn");
+
+const newtask_form = document.getElementById("new-task");
 
 document.addEventListener("DOMContentLoaded",function(){
-    let modalopenbuttons = document.querySelectorAll(`[${attr_toggel}='${class_modal}']`);
-    modalopenbuttons.forEach(btn => {
-        btn.addEventListener("click",openModal);
-    })
 
+    console.log("Script listos para correr");
+    console.log(new Date());
     loadTasks();
 
+    let modalopenbuttons = document.querySelectorAll(`[${attr_toggle}='${class_modal}']`);
 
+    modalopenbuttons.forEach(btn => { btn.addEventListener("click",openModal); });
+
+    close_btn.addEventListener("click",closeModal);
+
+    newtask_form.addEventListener("submit",saveNewTask);
+
+    let complete_checkboxes = document.querySelectorAll(`[${attr_toggle}='${class_task}']`);
+
+    complete_checkboxes.forEach(btn => { 
+        btn.addEventListener("click",function(){
+            acomplete(btn);
+        })});
+
+    see_all.addEventListener("click",function(){showAll(see_all);});
 
 })
+function acomplete(box)
+{
+    console.log(box);
+    let task_selector = box.getAttribute(attr_target);
+    let tasktarget = document.getElementById    (task_selector);
+    console.log(tasktarget);
+    if(box.checked)
+    {
+        tasktarget.classList.add(class_complete);
+        if(!see_all.checked)
+            tasktarget.classList.add(class_hide);
+    }
+        
+    else{
+        tasktarget.classList.remove(class_complete);
+        tasktarget.classList.remove(class_hide);
+    }
+}
+
+function showAll(box){
+    task_list.forEach(element => {
+        if(box.checked)
+            element.classList.remove(class_hide);
+        else{  
+            if(element.classList.contains(class_complete))
+                element.classList.add(class_hide);
+
+        }
+    });
+
+}
+
 /**
  * Muestra un modal
  * @param {PointerEvent} e 
@@ -65,74 +119,11 @@ function loadTasks(){
         let task_data = JSON.parse(task_json);
         console.log(task_data);
         addToList(task_data);
-        //task_list.push(task_data);
+        
         //funcion para cargar las tareas
     });
 
 };
-
-function printTaskList(){
-
-}
-
-function examplesave(){
-    var ejemplo = [];
-
-    ejemplo.push("uno");
-    ejemplo.push("dos");
-    ejemplo.push("tres");
-    ejemplo.push("cuatro");
-    console.log(ejemplo);
-
-    var jsoneje = JSON.stringify(ejemplo);
-
-    console.log(jsoneje);
-
-    localStorage.setItem("ejemjson",jsoneje);
-    localStorage.setItem("ejemarre",ejemplo);
-
-    var backjson = localStorage.getItem("ejemjson");
-    var backarre = localStorage.getItem("ejemarre");
-
-    console.log("modo json ",backjson);
-    console.log("modo arreglo ",backarre);
-
-    var jsonarreglo = JSON.parse(backjson);
-
-    console.log(jsonarreglo);
-
-    jsonarreglo.forEach(element => {
-        console.log(element);
-    });
-}
-
-function completeTask(){
-
-}
-
-var modal = document.getElementById("modal");
-var close_btn = document.getElementById("modal-close-btn");
-
-var newtask_form = document.getElementById("new-task");
-
-
-document.addEventListener("DOMContentLoaded",function(){
-    console.log("modal button script, loaded");
-    console.log(new Date());
-    close_btn.addEventListener("click",function(){
-        closeModal();
-    })
-
-    newtask_form.addEventListener("submit",function(e){
-        saveNewTask(e)
-    })
-
-});
-
-function closeModal(){
-    modal.style.display = "none";
-    emptyForm();
-}
 
 function emptyForm(){
     newtask_form["title"].value = null;
@@ -158,25 +149,32 @@ function saveNewTask(e){
         id : dateToKey()
     };
 
+    console.log(data);
+
     //generamos una llave para la informacion de la tarea y la guardamos en el localstorage
     var datajson = JSON.stringify(data);
     localStorage.setItem(data.id,datajson);
 
     //agregamos la nueva llave al arreglo de llaves actual y guardamos el llavero en el localstorage
     keychain.push(data.id);
-    var keyjson = JSON.stringify(keychain);
-    localStorage.setItem(LS_keyChain,keyjson);
+    update_keychain();
+
     addToList(data);
     //cerramos  el modal
     closeModal();
 };
+
+function update_keychain(){
+    var keyjson = JSON.stringify(keychain);
+    localStorage.setItem(LS_keyChain,keyjson);
+}
 
 /**
  * funcion para crear una llave apartir de la fecha actual, regresa una cadena
  */
 function dateToKey(){
     let today = new Date();
-    let keydate = today.getDay().toString() + "-" 
+    let keydate = "key" + today.getDay().toString() + "-" 
                 + today.getMonth().toString() + "-" 
                 + today.getFullYear().toString() + "/" 
                 + today.getHours().toString() + ":"
@@ -193,9 +191,9 @@ function dateToKey(){
 function addToList(data)
 {
     newtask = document.createElement("div");
-    newtask.className = ("col-12");
+    newtask.className = "col-12 task";
+    newtask.id = data.id;
     newtask.innerHTML = `
-    <div class="col-12" style="border-top: 1px solid gray;" id="${data.id}">
         <div class="row">
             <div class="col-12 col-md-8">
                 ${data.title}
@@ -207,10 +205,11 @@ function addToList(data)
                 ${data.description}
             </div>
             <div class="col-12 toLeft">
-                <input type="checkbox" name="checkbox" data-toggle = "" data-target="#${data.id}">
+                <input type="checkbox" name="checkbox" data-toggle="task" data-target="${data.id}">
                 <label for="checkbox">Completa</label>
             </div>
-        </div>
-    </div>`
+        </div>`
+    task_list.push(newtask);
     task_space.appendChild(newtask);
+    
 }
