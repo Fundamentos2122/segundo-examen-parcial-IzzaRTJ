@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/framework.css">
+    <title>Document</title>
+</head>
+<body class="container-fluid container-lg" style="background-color:lightgrey;">
+
+    <div class="col-12" style="background-color: mintcream;">
+        <div class="row">
+            <div class="col-12"  style="background-color: cadetblue;">
+                <h1 class="header text-light display-4">Lista de tareas</h1>
+            </div>
+            <div class="col-12" style="display:flex; justify-content: space-between; padding: 10px 25px ;">
+                <div>
+                    <label for="checkbox">Todas</label>
+                    <input type="checkbox" name="checkbox" id="see-all">
+                </div>
+                <button class=" btn-success"id="btn-nuevo" data-toggle="modal" data-target="#modal">Nueva Tarea</button>
+            </div>
+            
+            <div class="col-12" id="tasks-space" style="padding: 0em 1em 1em 1em;"> </div>
+
+        </div>
+    </div>
+    
+    <div class="modal" style="background-color: rgba(50,50, 50, 0.5); display: none;" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 >Agregar tarea</h4>
+                <button class="btn btn-danger"  id="modal-close-btn" data-dismiss="#modal">X</button>
+            </div>
+            
+            <div class="modal-body">
+                <form name="new-task" id="new-task">
+                    <div class="col-12 form-div">
+                        <label for="title">Titulo</label>
+                        <input type="text" name="title" required="true" class="form-60" autocomplete="false">
+                    </div>
+                    <div class="col-12 form-div">
+                        <label for="description">Descripcion</label>
+                        <input type="text" name="description" class="form-60" aria-multiline="true" autocomplete="false">
+                    </div>
+                    <div class="col-12 form-div">
+                        <label for="date">Fecha</label>
+                        <input type="date" name="date" class="form-60">
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" value="Guardar" class="btn btn-success">
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+
+</body>
+</html> 
