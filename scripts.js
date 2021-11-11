@@ -12,7 +12,7 @@ var task_list = [];
 
 const attr_toggle = "data-toggle";
 const attr_target = "data-target";
-const attr_dismiss = "data-dismis";
+const attr_dismiss = "data-dismiss";
 const class_modal = "modal";
 const class_task = "task"
 const class_show = "show";
@@ -91,11 +91,11 @@ function showAll(box){
 function openModal(e){
     let modal_selector = e.target.getAttribute(attr_target);
 
-    let modal = document.querySelector(modal_selector);
+    let modaltar = document.querySelector(modal_selector);
 
-    modal.style.display="block";
+    modaltar.style.display="block";
 
-    modal.classList.add(class_show)
+    modaltar.classList.add(class_show)
 };
 
 /**
@@ -103,11 +103,13 @@ function openModal(e){
  * @param {PointerEvent} e 
  */
  function closeModal(e){
-    let modal_selector = e.target.getAttribute(attr_dismiss);
+    //let modal_selector = e.target.getAttribute(attr_dismiss);
 
-    let modal = document.querySelector(modal_selector);
+    //let modaltar = document.querySelector(modal_selector);
 
-    modal.clasdList.remove(class_modal)
+    modal.style.display = "none";
+
+    //modaltar.classList.add(class_show)
 };
 
 /**
